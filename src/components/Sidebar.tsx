@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { ChevronDown, FileText, Folder } from "lucide-react";
+import { ChevronDown, FileText, Car } from "lucide-react";
 import { useDocuments } from "../contexts/DocumentContext";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +24,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     setSelectedSubcategory(subcategory);
   };
 
+  // The list of subcategories with their icons
+  const subcategories = [
+    { name: "Contas a pagar", icon: <FileText className="w-4 h-4 mr-2" /> },
+    { name: "Reembolso de despesas", icon: <FileText className="w-4 h-4 mr-2" /> },
+    { name: "Adiantamento de despesas", icon: <FileText className="w-4 h-4 mr-2" /> },
+    { name: "Locação de veículos", icon: <Car className="w-4 h-4 mr-2" /> },
+    { name: "Recebimento de demonstrativo NF e Prestador de serviço", icon: <FileText className="w-4 h-4 mr-2" /> },
+    { name: "Pagamento de premiação de campanhas", icon: <FileText className="w-4 h-4 mr-2" /> }
+  ];
+
   return (
     <div 
       className={cn(
@@ -42,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             className="flex items-center justify-between w-full px-2 py-2 text-left rounded-md hover:bg-blue-50"
           >
             <div className="flex items-center space-x-2">
-              <Folder className="w-5 h-5 text-blue-600" />
+              <FileText className="w-5 h-5 text-blue-600" />
               <span className="font-medium">Financeiro</span>
             </div>
             <ChevronDown 
@@ -53,27 +63,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
         {isFinanceiroOpen && (
           <div className="mt-1 ml-6 pl-4 border-l border-gray-200">
-            <button 
-              onClick={() => handleSelectSubcategory("Solicitação de reembolso de despesas")}
-              className={cn(
-                "flex items-center w-full px-2 py-2 text-left text-sm rounded-md hover:bg-blue-50",
-                selectedSubcategory === "Solicitação de reembolso de despesas" ? "bg-blue-100 text-blue-700" : "text-gray-600"
-              )}
-            >
-              <FileText className="w-4 h-4 mr-2" />
-              <span>Reembolso de despesas</span>
-            </button>
-            
-            <button 
-              onClick={() => handleSelectSubcategory("Solicitação de locação de veículos")}
-              className={cn(
-                "flex items-center w-full px-2 py-2 text-left text-sm rounded-md hover:bg-blue-50",
-                selectedSubcategory === "Solicitação de locação de veículos" ? "bg-blue-100 text-blue-700" : "text-gray-600"
-              )}
-            >
-              <FileText className="w-4 h-4 mr-2" />
-              <span>Locação de veículos</span>
-            </button>
+            {subcategories.map((subcategory) => (
+              <button 
+                key={subcategory.name}
+                onClick={() => handleSelectSubcategory(subcategory.name)}
+                className={cn(
+                  "flex items-center w-full px-2 py-2 text-left text-sm rounded-md hover:bg-blue-50",
+                  selectedSubcategory === subcategory.name ? "bg-blue-100 text-blue-700" : "text-gray-600"
+                )}
+              >
+                {subcategory.icon}
+                <span className="truncate">{subcategory.name}</span>
+              </button>
+            ))}
           </div>
         )}
       </div>
